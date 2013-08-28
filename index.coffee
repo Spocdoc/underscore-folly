@@ -1,7 +1,23 @@
 maxInt = 9007199254740992
+spaceChars = " \t\r\n\u00a0"
 
 # some from lodash
 module.exports = _ =
+
+  startsWith: (string, start) ->
+    string.lastIndexOf(start,0) is 0
+
+  endsWith: (string, end) ->
+    string.indexOf(end, string.length - end.length) isnt -1
+
+  regexpEscape: do ->
+    regex = /[-\/\\^$*+?.()|[\]{}]/g
+    (str) -> return str.replace(regex, '\\$&')
+
+  # because IE considers \u00a0 to be non-space
+  regexpWhitespace: spaceChars
+  regexp_s: "[#{spaceChars}]"
+  regexp_S: "[^#{spaceChars}]"
 
   debounceAsync: (fn) ->
     running = false
