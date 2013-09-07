@@ -1,5 +1,6 @@
 fs = require 'fs'
 async = require 'async'
+path = require 'path'
 
 module.exports = (_) ->
   transpilerBase =
@@ -89,8 +90,11 @@ module.exports = (_) ->
       transpiler filePath
 
     sourceMap: (filePath, cb) ->
-      ext = path.extname(filePath)[1..]
-      if mapFn = codeSourceMap[ext]
+      ext = path.extname filePath
+      if mapFn = codeSourceMap.async[ext]
         mapFn filePath, cb
       else
         cb null, null
+
+    sourceMapSync: (filePath) ->
+      codeSourceMap.sync[path.extname filePath]? filePath

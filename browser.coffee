@@ -4,6 +4,17 @@ spaceChars = " \t\r\n\u00a0"
 # some from lodash
 module.exports = _ =
 
+  tasks: do ->
+    recurse = (auto, task, visit) ->
+      return unless requires = auto[task]
+      delete auto[task] # no cycle detection
+      recurse auto, required, visit for required in requires
+      visit task, requires
+
+    (auto, visit) ->
+      recurse auto, task, visit for task of auto
+      return
+
   startsWith: (string, start) ->
     string.lastIndexOf(start,0) is 0
 

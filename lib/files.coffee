@@ -28,7 +28,8 @@ module.exports = (_) ->
       cacheResults = {}
 
       (filePath, args..., cb) ->
-        getModTime filePath, (err, mtime) ->
+        debugger unless cb
+        _.getModTime filePath, (err, mtime) ->
           return cb(err) if err?
           return cb(null, cacheResults[filePath]) if cacheTimes[filePath] is mtime
 
@@ -36,6 +37,7 @@ module.exports = (_) ->
             return cb(err) if err?
             cacheTimes[filePath] = mtime
             cacheResults[filePath] = result
+            debugger unless cb
             cb null, result
 
     fileMemoizeSync: (fn) ->
@@ -43,7 +45,7 @@ module.exports = (_) ->
       cacheResults = {}
 
       (filePath, args...) ->
-        mtime = getModTimeSync filePath
+        mtime = _.getModTimeSync filePath
         return cacheResults[filePath] if cacheTimes[filePath] is mtime
         cacheTimes[filePath] = mtime
         cacheResults[filePath] = fn filePath, args...
