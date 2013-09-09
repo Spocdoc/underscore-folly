@@ -12,5 +12,7 @@
   "dependencies": {
     "async": "0.x"
   },
-  "DEBUG local dependencies": {}
+  "DEBUG local dependencies": {
+    "function_names": "0.x"
+  }
 }

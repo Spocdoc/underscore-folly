@@ -1,3 +1,4 @@
+require 'function_names'
 maxInt = 9007199254740992
 spaceChars = " \t\r\n\u00a0"
 
@@ -62,7 +63,7 @@ module.exports = _ =
 
   Registry: class Registry
     constructor: ->
-      @r = Object.create null
+      @r = {}
 
     find: (obj) ->
       return false unless reg = @r[obj.constructor.name]
