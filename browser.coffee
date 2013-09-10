@@ -224,8 +224,13 @@ module.exports = _ =
      '&': '&amp;',
      '<': '&lt;',
      '>': '&gt;'
+     '"': "&quot;"
+     '\'': "&#39;"
+
+    regexAll = /[&<>"']/g
+    regexNoEnt = /(&(?!#?\w+;)|[<>"'])/g
 
     escapeChar = (ch) -> unsafeEscape[ch] || ch
 
-    (text) ->
-      text.replace /[&<>]/g, escapeChar
+    (text, skipEntities) ->
+      text.replace (if skipEntities then regexNoEnt else regexAll), escapeChar
