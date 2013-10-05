@@ -3,12 +3,12 @@ maxInt = 9007199254740992
 spaceChars = " \t\r\n\u00a0"
 
 regexSentenceSplit = ///
-    ((?:\b(?:etc|i\.?e|e\.?g|viz|[A-Z]))?[\n\.!\?…]+)
-    (?=$|[^\w,;])
-    ///
+  ((?:\b(?:etc|i\.?e|e\.?g|viz|[A-Z]))?[\n\.!\?…]+["'\u201c\u201d\u2018\u2019]?)
+  (?=$|[^\w,;])
+  ///
 regexTerminator = /^(?:[\n!\?]|\.(?=[^\.]|$))/
-regexQuote = /^["'\u201c\u201d\u2018\u2019]/
 regexCapitalSentence = /^[^a-zA-Z\n]*(?:[A-Z\n]|$)/
+regexEndQuote = /["'\u201c\u201d\u2018\u2019]$/
 
 # some from lodash
 module.exports = _ =
@@ -29,8 +29,7 @@ module.exports = _ =
         sentence += next
         ++j
 
-        if regexTerminator.test next
-          break unless j < iE and regexQuote.test splits[j].charAt(0)
+        break if regexTerminator.test(next) and not regexEndQuote.test(next)
 
         if j < iE
           next = splits[j]
