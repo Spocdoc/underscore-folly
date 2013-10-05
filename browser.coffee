@@ -2,8 +2,45 @@ require 'function_names'
 maxInt = 9007199254740992
 spaceChars = " \t\r\n\u00a0"
 
+regexSentenceSplit = ///
+    ((?:\b(?:etc|i\.?e|e\.?g|viz|[A-Z]))?[\n\.!\?…]+)
+    (?=$|[^\w,;])
+    ///
+regexTerminator = /^(?:[\n!\?]|\.(?=[^\.]|$))/
+regexQuote = /^["'\u201c\u201d\u2018\u2019]/
+regexCapitalSentence = /^[^a-zA-Z\n]*(?:[A-Z\n]|$)/
+
 # some from lodash
 module.exports = _ =
+
+  splitSentences: (text) ->
+    splits = text.split regexSentenceSplit
+
+    sentences = []
+
+    i = 0; iE = splits.length
+    while i < iE
+      sentence = splits[i]
+
+      j = i + 1
+
+      while j < iE
+        next = splits[j]
+        sentence += next
+        ++j
+
+        if regexTerminator.test next
+          break unless j < iE and regexQuote.test splits[j].charAt(0)
+
+        if j < iE
+          next = splits[j]
+          break if regexCapitalSentence.test next
+          sentence += splits[j++]
+
+      sentences.push sentence
+      i = j
+
+    sentences
 
   tasks: do ->
     recurse = (auto, task, visit) ->

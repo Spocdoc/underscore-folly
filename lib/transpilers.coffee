@@ -6,17 +6,20 @@ module.exports = (_) ->
   transpilerBase =
     sync:
       '.coffee': _.fileMemoizeSync (filePath) ->
-        code = _.readFileSync filePath
-        coffee = require 'coffee-script'
-        obj = coffee.compile code,
-          bare: true
-          sourceMap: true
-          sourceFiles: [filePath]
-          generatedFile: [filePath]
-        return {
-          js: obj['js']
-          sourceMap: JSON.parse obj['v3SourceMap']
-        }
+        try
+          code = _.readFileSync filePath
+          coffee = require 'coffee-script'
+          obj = coffee.compile code,
+            bare: true
+            sourceMap: true
+            sourceFiles: [filePath]
+            generatedFile: [filePath]
+          return {
+            js: obj['js']
+            sourceMap: JSON.parse obj['v3SourceMap']
+          }
+        catch e
+          throw new Error "Error compiling #{filePath}: #{e}"
 
     async:
       '.coffee': _.fileMemoize (filePath, cb) ->
