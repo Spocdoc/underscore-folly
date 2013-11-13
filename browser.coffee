@@ -221,7 +221,7 @@ module.exports = _ =
       timeoutId = null;
       result = func.apply(thisArg, args);
     }
-    return function() {
+    var ret = function() {
       var now = new Date,
           remaining = wait - (now - lastCalled);
 
@@ -239,6 +239,16 @@ module.exports = _ =
       }
       return result;
     };
+
+    ret['runQueued'] = function () {
+      if (timeoutId != null) {
+        clearTimeout(timeoutId);
+        trailingCall();
+      }
+      return result;
+    };
+
+    return ret;
   }`
 
   argNames: do ->
