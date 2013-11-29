@@ -1,6 +1,8 @@
 fs = require 'fs'
 async = require 'async'
 path = require 'path'
+convertSourceMap = require 'convert-source-map'
+{SourceMapConsumer, SourceMapGenerator} = require 'source-map'
 
 module.exports = (_) ->
   transpilerBase =
@@ -101,3 +103,36 @@ module.exports = (_) ->
 
     sourceMapSync: (filePath) ->
       codeSourceMap.sync[path.extname filePath]? filePath
+
+    # given code with a b64 sourcemap at the end, extracts it and returns the
+    # code without the sourcemap and the (object) sourcemap
+    extractSourcemap: (code) ->
+      code: code.replace convertSourceMap.commentRegex, ''
+      map: convertSourceMap.fromSource(code)?.sourcemap
+
+
+    # takes an array of code, each of which optionally have a trailing b64
+    # sourcemap, and merges them into a single piece of code with a trailing
+    # sourcemap
+    mergeMappedCode: (arr) ->
+      bundleMap = new SourceMapGenerator file: 'bundle-5298e9128a2f32388dde4970.js'
+      bundleCode = ''
+      offset = 0
+
+      for code in arr
+        {code,map} = _.extractSourcemap code
+        if map
+          (new SourceMapConsumer map).eachMapping (m) ->
+            bundleMap.addMapping
+              generated:
+                line: m.generatedLine + offset
+                column: m.generatedColumn
+              original:
+                line: m.originalLine
+                column: m.originalColumn
+              source: m.source
+              name: m.name
+        bundleCode += code += ';\n'
+        offset += code.match(/\r?\n/g).length
+
+      "#{bundleCode}#{convertSourceMap.fromObject(bundleMap).toComment()}"

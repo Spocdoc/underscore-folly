@@ -251,6 +251,29 @@ module.exports = _ =
     return ret;
   }`
 
+  startStop: (interval, fn) ->
+    thisArg = undefined
+    args = null
+    id = null
+
+    trailingCall = ->
+      fn.apply thisArg, args
+
+    ret = ->
+      args = arguments
+      thisArg = this
+      clearInterval id
+      result = fn.apply thisArg, args
+      id = setInterval trailingCall, interval
+      result
+
+    ret['stop'] = ->
+      clearInterval id
+      return
+
+    ret
+
+
   argNames: do ->
     regexComments = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
     regexFunction = /^function\s*[^\(]*\(([^\)]*)\)\s*\{([\s\S]*)\}$/m

@@ -10,7 +10,9 @@
   "author": "",
   "private": true,
   "dependencies": {
-    "async": "0.x"
+    "async": "0.x",
+    "convert-source-map": "0.x",
+    "source-map": "~0.x"
   },
   "DEBUG local dependencies": {
     "function_names": "0.x"
