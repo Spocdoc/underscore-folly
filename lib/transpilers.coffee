@@ -114,15 +114,18 @@ module.exports = (_) ->
     # takes an array of code, each of which optionally have a trailing b64
     # sourcemap, and merges them into a single piece of code with a trailing
     # sourcemap
-    mergeMappedCode: (arr) ->
+    mergeMappedCode: (arr, inlineSources) ->
       bundleMap = new SourceMapGenerator file: 'bundle-5298e9128a2f32388dde4970.js'
       bundleCode = ''
       offset = 0
+
+      sources = {}
 
       for code in arr
         {code,map} = _.extractSourcemap code
         if map
           (new SourceMapConsumer map).eachMapping (m) ->
+            sources[m.source] = 1 if m.source
             bundleMap.addMapping
               generated:
                 line: m.generatedLine + offset
@@ -134,5 +137,13 @@ module.exports = (_) ->
               name: m.name
         bundleCode += code += ';\n'
         offset += code.match(/\r?\n/g).length
+
+      if inlineSources
+        for source of sources
+          try
+            bundleMap.setSourceContent source, _.readFileSync source
+          catch _error
+            console.error "Error getting source content: #{_error}"
+            bundleMap.setSourceContent source, '(error reading source)'
 
       "#{bundleCode}#{convertSourceMap.fromObject(bundleMap).toComment()}"

@@ -3,6 +3,10 @@ async = require 'async'
 
 encodingOption = { encoding: 'utf8' }
 
+readFileCache =
+  cacheTimes: {}
+  cacheResults: {}
+
 module.exports = (_) ->
   _.extend _,
     getModTime: (filePath, cb) ->
@@ -23,9 +27,9 @@ module.exports = (_) ->
         return r if r = cache[filePath]
         cache[filePath] = fs.statSync(filePath).ino
 
-    fileMemoize: (fn) ->
-      cacheTimes = {}
-      cacheResults = {}
+    fileMemoize: (fn, cache) ->
+      cacheTimes = cache?.cacheTimes || {}
+      cacheResults = cache?.cacheResults || {}
 
       (filePath, args..., cb) ->
         debugger unless cb
@@ -40,9 +44,9 @@ module.exports = (_) ->
             debugger unless cb
             cb null, result
 
-    fileMemoizeSync: (fn) ->
-      cacheTimes = {}
-      cacheResults = {}
+    fileMemoizeSync: (fn, cache) ->
+      cacheTimes = cache?.cacheTimes || {}
+      cacheResults = cache?.cacheResults || {}
 
       (filePath, args...) ->
         mtime = _.getModTimeSync filePath
@@ -51,6 +55,6 @@ module.exports = (_) ->
         cacheResults[filePath] = fn filePath, args...
 
   _.extend _,
-    readFile: _.fileMemoize (filePath, cb) -> fs.readFile filePath, encodingOption, cb
-    readFileSync: _.fileMemoizeSync (filePath) -> fs.readFileSync filePath, encodingOption
+    readFile: _.fileMemoize ((filePath, cb) -> fs.readFile filePath, encodingOption, cb), readFileCache
+    readFileSync: _.fileMemoizeSync ((filePath) -> fs.readFileSync filePath, encodingOption), readFileCache
 
