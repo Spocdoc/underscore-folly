@@ -1,5 +1,6 @@
 fs = require 'fs'
 async = require 'async'
+hash = require 'hash-fork'
 
 encodingOption = { encoding: 'utf8' }
 
@@ -7,8 +8,32 @@ readFileCache =
   cacheTimes: {}
   cacheResults: {}
 
+readBinaryCache =
+  cacheTimes: {}
+  cacheResults: {}
+
+fileHashCache =
+  cacheTimes: {}
+  cacheResults: {}
+
 module.exports = (_) ->
   _.extend _,
+    sameFileSync: (filePath1, filePath2) ->
+      _.getInodeSync(filePath1) is _.getInodeSync(filePath2)
+
+    newerThanSync: (lhs, rhs) ->
+      try
+        lhs = _.getModTimeSync(lhs)
+      catch _error
+        return false
+
+      try
+        rhs = _.getModTimeSync(rhs)
+      catch _error
+        return true
+
+      lhs > rhs
+
     getModTime: (filePath, cb) ->
       fs.stat filePath, (err, stat) ->
         return cb(err) if err?
@@ -57,4 +82,15 @@ module.exports = (_) ->
   _.extend _,
     readFile: _.fileMemoize ((filePath, cb) -> fs.readFile filePath, encodingOption, cb), readFileCache
     readFileSync: _.fileMemoizeSync ((filePath) -> fs.readFileSync filePath, encodingOption), readFileCache
+
+    readBinary: _.fileMemoize ((filePath, cb) -> fs.readFile filePath, cb), readBinaryCache
+    readBinarySync: _.fileMemoizeSync ((filePath) -> fs.readFileSync filePath), readBinaryCache
+
+    fileHash: _.fileMemoize ((filePath, cb) ->
+      _.readBinary filePath, (err, buffer) ->
+        return cb err if err?
+        cb null, hash buffer
+    ), fileHashCache
+
+    fileHashSync: _.fileMemoizeSync ((filePath) -> hash _.readBinarySync filePath), fileHashCache
 

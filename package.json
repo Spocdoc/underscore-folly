@@ -12,9 +12,9 @@
   "dependencies": {
     "async": "0.x",
     "convert-source-map": "0.x",
-    "source-map": "~0.x"
-  },
-  "DEBUG local dependencies": {
-    "function_names": "0.x"
+    "source-map": "~0.x",
+
+    "function_names": "0.x",
+    "hash-fork": "0.x"
   }
 }

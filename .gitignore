@@ -1,2 +1,11 @@
+coverage.html
+tmp
+app
+lib/bundler/server/load-*
+routes.coffee
+.d8_history
+bench
+test
+*.jar
 node_modules
-package.yml
+archive

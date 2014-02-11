@@ -12,6 +12,10 @@ regexEndQuote = /["'\u201c\u201d\u2018\u2019]$/
 
 # some from lodash
 module.exports = _ =
+  nocaseCmp: (lhs, rhs) ->
+    # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
+    # the below is faster, although not locale-aware
+    `(lhs.toLowerCase() < rhs.toLowerCase() ? -1 : 1)`
 
   splitSentences: (text) ->
     splits = text.split regexSentenceSplit
@@ -62,36 +66,39 @@ module.exports = _ =
     regex = /[-\/\\^$*+?.()|[\]{}]/g
     (str) -> return str.replace(regex, '\\$&')
 
+  regexp_punct: "\\(\\[?!.,;\\{\\}:\\]\\)'\"`‘’“”«»‹›"
+
   # because IE considers \u00a0 to be non-space
   regexpWhitespace: spaceChars
   regexp_s: "[#{spaceChars}]"
   regexp_S: "[^#{spaceChars}]"
 
+
   debounceAsync: (fn) ->
-    running = false
     shouldRun = false
 
-    done = (completer) ->
-      if shouldRun
-        run()
-      else
-        running = false
-        completer?()
-      return
-
-    run = ->
-      running = true
-      shouldRun = false
-      fn done
-      return
-
-    ->
-      if running
+    ret = ->
+      if ret.running
         shouldRun = true
       else
         run()
       return
 
+    done = (completer) ->
+      if shouldRun
+        run()
+      else
+        ret.running = false
+        completer?()
+      return
+
+    run = ->
+      ret.running = true
+      shouldRun = false
+      fn done
+      return
+
+    ret
 
   makeId: do ->
     count = 0
