@@ -134,6 +134,7 @@ module.exports = (_) ->
       handledRequiresCount = fixedRequiresCount = Object.keys(require.cache).length
       pollRequires()
       timerId = setInterval pollRequires, POLL_MILLIS
+      timerId.unref() # prevent this timer from keeping the process alive
 
       watcher
 
