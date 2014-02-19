@@ -8,8 +8,6 @@ POLL_MILLIS = 100
 CLEAR_MILLIS = 1000
 
 module.exports = (_) ->
-
-
   _.extend _,
 
     # dirs is optional
@@ -137,7 +135,3 @@ module.exports = (_) ->
       timerId.unref() # prevent this timer from keeping the process alive
 
       watcher
-
-
-
-

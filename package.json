@@ -1,6 +1,6 @@
 {
   "name": "lodash-fork",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ERROR: No README.md file found!",
   "main": "index.coffee",
   "scripts": {
@@ -15,6 +15,7 @@
     "source-map": "~0.x",
 
     "function_names": "0.x",
+    "debug-fork": "0.x",
     "hash-fork": "0.x"
   }
 }
