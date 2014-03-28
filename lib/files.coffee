@@ -1,6 +1,8 @@
 fs = require 'fs'
 async = require 'async'
 hash = require 'hash-fork'
+require 'debug-fork'
+debugError = global.debug 'error'
 
 encodingOption = { encoding: 'utf8' }
 
@@ -41,6 +43,8 @@ module.exports = (_) ->
 
     getModTimeSync: (filePath) -> fs.statSync(filePath).mtime.getTime()
 
+    stat: async.memoize fs.stat
+
     getInode: async.memoize (filePath, cb) ->
       fs.stat filePath, (err, stat) ->
         return cb(err) if err?
@@ -74,7 +78,12 @@ module.exports = (_) ->
       cacheResults = cache?.cacheResults || {}
 
       (filePath, args...) ->
-        mtime = _.getModTimeSync filePath
+        try
+          mtime = _.getModTimeSync filePath
+        catch _error
+          debugError "attempt to fileMemoize on a nonexistent file at [#{filePath}]"
+          return ''
+
         return cacheResults[filePath] if cacheTimes[filePath] is mtime
         cacheTimes[filePath] = mtime
         cacheResults[filePath] = fn filePath, args...
