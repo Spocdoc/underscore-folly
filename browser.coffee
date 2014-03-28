@@ -10,8 +10,18 @@ regexTerminator = /^(?:[\n!\?]|\.(?=[^\.]|$))/
 regexCapitalSentence = /^[^a-zA-Z\n]*(?:[A-Z\n]|$)/
 regexEndQuote = /["'\u201c\u201d\u2018\u2019]$/
 
+charsRegex = /[^A-Za-z0-9-_]/g
+startRegex = /^[^A-Za-z]+/
+
 # some from lodash
 module.exports = _ =
+  makeCssClass: (type) ->
+    type.toLowerCase()
+      .replace(/\//g, '-')
+      .replace(/\x20/g, '_')
+      .replace(charsRegex,'')
+      .replace(startRegex,'')
+
   nocaseCmp: (lhs, rhs) ->
     # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
     # the below is faster, although not locale-aware
