@@ -3,6 +3,7 @@ async = require 'async'
 hash = require 'hash-fork'
 require 'debug-fork'
 debugError = global.debug 'error'
+mkdirp = require 'mkdirp'
 
 encodingOption = { encoding: 'utf8' }
 
@@ -20,6 +21,8 @@ fileHashCache =
 
 module.exports = (_) ->
   _.extend _,
+    mkdirp: mkdirp
+
     sameFileSync: (filePath1, filePath2) ->
       _.getInodeSync(filePath1) is _.getInodeSync(filePath2)
 
