@@ -28,9 +28,6 @@ module.exports = _ =
         "image/#{extension}"
       when 'jpg'
         'image/jpeg'
-      else
-        'application/octet-stream'
-
 
   nocaseCmp: (lhs, rhs) ->
     # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
