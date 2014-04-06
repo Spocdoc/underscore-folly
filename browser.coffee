@@ -29,6 +29,22 @@ module.exports = _ =
       when 'jpg'
         'image/jpeg'
 
+  uint8ToB64: (bytes) ->
+    len = bytes.buffer.byteLength
+    base64 = ""
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    i = 0
+    while i < len
+      base64 += chars[bytes[i] >> 2]
+      base64 += chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)]
+      base64 += chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)]
+      base64 += chars[bytes[i + 2] & 63]
+      i += 3
+    if (len % 3) is 2
+      base64 = base64.substring(0, base64.length - 1) + "="
+    else base64 = base64.substring(0, base64.length - 2) + "=="  if len % 3 is 1
+    base64
+
   nocaseCmp: (lhs, rhs) ->
     # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
     # the below is faster, although not locale-aware
