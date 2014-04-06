@@ -22,6 +22,16 @@ module.exports = _ =
       .replace(charsRegex,'')
       .replace(startRegex,'')
 
+  imgMime: (extension='') ->
+    switch extension = extension.toLowerCase()
+      when 'jpeg', 'png', 'jp2', 'tiff', 'psd', 'bmp', 'gif'
+        "image/#{extension}"
+      when 'jpg'
+        'image/jpeg'
+      else
+        'application/octet-stream'
+
+
   nocaseCmp: (lhs, rhs) ->
     # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
     # the below is faster, although not locale-aware
