@@ -4,6 +4,7 @@ hash = require 'hash-fork'
 require 'debug-fork'
 debugError = global.debug 'error'
 mkdirp = require 'mkdirp'
+{spawn} = require('child_process')
 
 encodingOption = { encoding: 'utf8' }
 
@@ -19,9 +20,44 @@ fileHashCache =
   cacheTimes: {}
   cacheResults: {}
 
+regexTypes =
+  pdf: /\bpdf\b/i
+  txt: /\b(?:ascii|text)\b/i
+
 module.exports = (_) ->
   _.extend _,
     mkdirp: mkdirp
+
+    fileType: (src, cb) ->
+      done = false
+      out = ''
+
+      file = spawn 'file', ['-']
+      file.stdin.on 'error', (err) ->
+        unless done
+          done = true
+          return cb(err or new Error("Can't spawn file"))
+      file.stdin.write src, (err) ->
+        file.stdin.end()
+
+      handleChunk = (chunk) ->
+        if chunk
+          out += chunk.toString 'utf-8'
+        return
+
+      file.stdout.on 'data', handleChunk
+
+      file.stdout.on 'end', (chunk) ->
+        handleChunk chunk
+        unless done
+          done = true
+          for type, regex of regexTypes
+            if regex.test out
+              return cb null, type
+          return cb null, null
+
+      return
+
 
     sameFileSync: (filePath1, filePath2) ->
       _.getInodeSync(filePath1) is _.getInodeSync(filePath2)
