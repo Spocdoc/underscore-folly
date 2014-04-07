@@ -32,13 +32,15 @@ module.exports = (_) ->
       done = false
       out = ''
 
-      file = spawn 'file', ['-']
-      file.stdin.on 'error', (err) ->
+      file = spawn 'file', ['-'], stdio: 'pipe'
+
+      file.on 'error', ->
         unless done
           done = true
           return cb(err or new Error("Can't spawn file"))
-      file.stdin.write src, (err) ->
-        file.stdin.end()
+
+      file.stdin.on 'error', (err) ->
+      file.stdin.write src, (err) -> file.stdin.end()
 
       handleChunk = (chunk) ->
         if chunk
