@@ -13,8 +13,21 @@ regexEndQuote = /["'\u201c\u201d\u2018\u2019]$/
 charsRegex = /[^A-Za-z0-9-_]/g
 startRegex = /^[^A-Za-z]+/
 
+regexB64 = /^data:([a-zA-z\/]+);base64,([0-9A-Za-z=+\/]+)$/
+
 # some from lodash
 module.exports = _ =
+  dataUri:
+    parse: (str) ->
+      if cap = regexB64.exec ''+str
+        return {
+          'mime': cap[1]
+          'b64': cap[2]
+        }
+
+    format: (mime, base64) ->
+      "data:#{mime};base64,#{base64}"
+
   makeCssClass: (type) ->
     type.toLowerCase()
       .replace(/\//g, '-')
