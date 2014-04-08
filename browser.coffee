@@ -35,6 +35,10 @@ module.exports = _ =
       .replace(charsRegex,'')
       .replace(startRegex,'')
 
+  imgExtension: (mime='') ->
+    if cap = /^image\/([a-zA-Z]+)$/.exec mime
+      cap[1].toLowerCase()
+
   imgMime: (extension='') ->
     switch extension = extension.toLowerCase()
       when 'jpeg', 'png', 'jp2', 'tiff', 'psd', 'bmp', 'gif'

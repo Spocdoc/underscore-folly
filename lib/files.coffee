@@ -28,6 +28,16 @@ module.exports = (_) ->
   _.extend _,
     mkdirp: mkdirp
 
+    isText: (src, cb) ->
+      src = src.toString('utf-8').substr(0,512)
+      return cb null, true unless src
+      return cb null, false if ~src.indexOf('\0')
+
+      nonascii = src.match(/[^\x20-\x7f\n\r\t\b]/g)?.length or 0
+      total = src.length
+
+      cb null, nonascii < 0.3 * total
+
     fileType: (src, cb) ->
       done = false
       out = ''
