@@ -4,6 +4,7 @@ require('./lib/files')(_)
 require('./lib/transpilers')(_)
 require('./lib/watch')(_)
 require('./lib/queue')(_)
+require('./lib/resgistry')(_)
 
 _.extendProps = (obj, mixin) ->
   for prop in Object.getOwnPropertyNames(mixin)
