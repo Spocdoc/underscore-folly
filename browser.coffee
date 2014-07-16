@@ -173,45 +173,7 @@ module.exports = _ =
         type: constructor
         d: data
       this
-
-  # inspired by <http://tomswitzer.net/2011/02/super-simple-javascript-queue/>
-  queue: ->
-
-    s = e = maxInt-10 # for testing wrap-around
-    a = []
-
-    fn = (v) ->
-      if v is undefined
-        if s isnt e
-          r = a[s]
-          delete a[s]
-          s = if s+1 is maxInt then 0 else s+1
-        return r
-      else
-        a[e] = v
-        e = if e+1 is maxInt then 0 else e+1
-        return fn
-
-    fn.empty = ->
-      s == e
-
-    fn.length = ->
-      `var len = s - e; return len < 0 ? -len : len;`
-      return
-
-    fn.unshift = (v) ->
-      if --s < 0
-        s = s + maxInt
-      a[s] = v
-      return fn
-
-    fn.clear = ->
-      e = s
-      a = []
-      return fn
-
-    fn
-
+  
   quote: do ->
     regexQuotes = /(["\\])/g
     regexNewlines = /([\n])/g
