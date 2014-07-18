@@ -1,3 +1,4 @@
+#
 require 'function_names'
 maxInt = 9007199254740992
 spaceChars = " \t\r\n\u00a0"
