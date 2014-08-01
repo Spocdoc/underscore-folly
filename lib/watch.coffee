@@ -10,9 +10,13 @@ CLEAR_MILLIS = 1000
 module.exports = (_) ->
   _.extend _,
 
-    # dirs is optional
-    # can add dirs after by calling the returned function on the dir array or
-    # string
+    ###*
+    Used to watch directories for any changes
+    @param callback the callback function
+    @param dirs is path of directories to be watched. 
+    It is optional, can add dirs after by calling returned function on the dir array or string
+    @param options the options related to watch the directories
+    ###
     watchDirs: (dirs, callback, options) ->
       if typeof dirs is 'function'
         options = callback
@@ -91,7 +95,11 @@ module.exports = (_) ->
       ret
 
   _.extend _,
-
+    ###*
+    Watches directories from the required cache
+    @param callback the callback function
+    @param options the options related to watch the directories
+    ###
     watchRequires: (callback, options) ->
       handledRequiresCount = fixedRequiresCount = 0
 
