@@ -11,11 +11,13 @@ module.exports = (_) ->
   _.extend _,
 
     ###*
-    Used to watch directories for any changes
-    @param callback the callback function
-    @param dirs is path of directories to be watched. 
-    It is optional, can add dirs after by calling returned function on the dir array or string
-    @param options the options related to watch the directories
+    *Used to watch directories for any changes
+    *
+    *@method watchDirs
+    *@param callback the callback function
+    *@param dirs is path of directories to be watched. 
+    *It is optional, can add dirs after by calling returned function on the dir array or string
+    *@param options the options related to watch the directories
     ###
     watchDirs: (dirs, callback, options) ->
       if typeof dirs is 'function'
@@ -96,27 +98,26 @@ module.exports = (_) ->
 
   _.extend _,
     ###*
-    Watches directories from the required cache
-    @param callback the callback function
-    @param options the options related to watch the directories
+    *Watches directories from the required cache
+    *
+    *@method watchRequires
+    *@param callback the callback function
+    *@param options the options related to watch the directories
     ###
     watchRequires: (callback, options) ->
       handledRequiresCount = fixedRequiresCount = 0
 
       reset = (done) ->
         debug "RESET"
-
-        # stop watching all files
+        
         watcher.clear()
 
-        # remove files from cache
         cache = require.cache
         requiredFiles = Object.keys cache
         i = fixedRequiresCount
         j = requiredFiles.length
         delete cache[requiredFiles[i++]] while i < j
 
-        # forget files after fixed count
         handledRequiresCount = fixedRequiresCount
 
         if callback.length
@@ -140,6 +141,6 @@ module.exports = (_) ->
       handledRequiresCount = fixedRequiresCount = Object.keys(require.cache).length
       pollRequires()
       timerId = setInterval pollRequires, POLL_MILLIS
-      timerId.unref() # prevent this timer from keeping the process alive
+      timerId.unref()
 
       watcher

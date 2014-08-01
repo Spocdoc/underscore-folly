@@ -28,9 +28,11 @@ module.exports = (_) ->
   _.extend _,
     mkdirp: mkdirp
     ###*
-    Checks if the object is text
-    @param src the object to be checked
-    @param cb the callback function
+    *Checks if the object is text
+    *
+    *@method isText
+    *@param src the object to be checked
+    *@param cb the callback function
     ###
     isText: (src, cb) ->
       src = src.toString('utf-8').substr(0,512)
@@ -74,19 +76,23 @@ module.exports = (_) ->
       return
 
     ###*
-    Checks if files have same inode
-    @param filePath1 the path of a file
-    @param filePath2 the path of a file
-    @return returns true if same inode, false otherwise
+    *Checks if files have same inode
+    *
+    *@method sameFileSync
+    *@param filePath1 the path of a file
+    *@param filePath2 the path of a file
+    *@return returns true if same inode, false otherwise
     ###
     sameFileSync: (filePath1, filePath2) ->
       _.getInodeSync(filePath1) is _.getInodeSync(filePath2)
 
     ###*
-    Checks if the first file has been modified later than the second file
-    @param lhs the path of the first file 
-    @param lhs the path of the seccond file 
-    @return returns true if first file is modified later, false otherwise
+    *Checks if the first file has been modified later than the second file
+    *
+    *@method newerThanSync
+    *@param lhs the path of the first file 
+    *@param lhs the path of the seccond file 
+    *@return returns true if first file is modified later, false otherwise
     ###
     newerThanSync: (lhs, rhs) ->
       try
@@ -102,9 +108,11 @@ module.exports = (_) ->
       lhs > rhs
     
     ###*
-    Gets the latest time of modification of the file
-    @param filePath the path of the file
-    @param cb the callback function
+    *Gets the latest time of modification of the file
+    *
+    *@method getModTime
+    *@param filePath the path of the file
+    *@param cb the callback function
     ###
     getModTime: (filePath, cb) ->
       fs.stat filePath, (err, stat) ->
@@ -112,18 +120,22 @@ module.exports = (_) ->
         cb null, stat.mtime.getTime()
 
     ###*
-    Gets the latest time of modification of the file. Synchronised version of getModTime
-    @param filePath the path of the file
-    @return the latest modified time of the file
+    *Gets the latest time of modification of the file. Synchronised version of getModTime
+    *
+    *@method getModTimeSync
+    *@param filePath the path of the file
+    *@return the latest modified time of the file
     ###
     getModTimeSync: (filePath) -> fs.statSync(filePath).mtime.getTime()
 
     stat: async.memoize fs.stat
     
     ###*
-    Gets the inode of the file
-    @param filePath the path of the file
-    @param cb the callback function
+    *Gets the inode of the file
+    *
+    *@method getInode
+    *@param filePath the path of the file
+    *@param cb the callback function
     ###
     getInode: async.memoize (filePath, cb) ->
       fs.stat filePath, (err, stat) ->
@@ -131,9 +143,11 @@ module.exports = (_) ->
         cb null, ""+stat.ino
 
     ###*
-    Gets the inode of the file Synchronised version of geetInode
-    @param filePath the path of the file
-    @return the inode of the file
+    *Gets the inode of the file Synchronised version of geetInode
+    *
+    *@method getInodeSync
+    *@param filePath the path of the file
+    *@return the inode of the file
     ###
     getInodeSync: do ->
       cache = {}
@@ -142,10 +156,12 @@ module.exports = (_) ->
         cache[filePath] = fs.statSync(filePath).ino
 
     ###*
-    File memoization, stores the result of most recent call of the function fn. 
-    If no modification has been carried out on the file till last call, most recent result is used 
-    @param fn the function call used on the file whose result is stored
-    @param cache the most recent result as well as time of the last modification of the file
+    *File memoization, stores the result of most recent call of the function fn. 
+    *If no modification has been carried out on the file till last call, most recent result is used 
+    *
+    *@method fileMemoize
+    *@param fn the function call used on the file whose result is stored
+    *@param cache the most recent result as well as time of the last modification of the file
     ###
     fileMemoize: (fn, cache) ->
       cacheTimes = cache?.cacheTimes || {}
@@ -165,11 +181,13 @@ module.exports = (_) ->
             cb null, result
 
     ###*
-    File memoization, stores the result of most recent call of the function fn. 
-    If no modification has been carried out on the file till last call, most rec/ent result is used.
-    Synchronized version of fileMemoize
-    @param fn the function call used on the file whose result is stored
-    @param cache the most recent result as well as time of the last modification of the file
+    *File memoization, stores the result of most recent call of the function fn. 
+    *If no modification has been carried out on the file till last call, most rec/ent result is used.
+    *Synchronized version of fileMemoize
+    *
+    *@method fileMemoizeSync
+    *@param fn the function call used on the file whose result is stored
+    *@param cache the most recent result as well as time of the last modification of the file
     ###
     fileMemoizeSync: (fn, cache) ->
       cacheTimes = cache?.cacheTimes || {}

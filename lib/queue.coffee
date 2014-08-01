@@ -4,8 +4,9 @@ maxInt = 9007199254740992
 module.exports = (_) ->
   _.extend _,
     ###*
-    Inspired by <http://tomswitzer.net/2011/02/super-simple-javascript-queue/>
-    A queue implementation in coffeescript
+    *Inspired by <http://tomswitzer.net/2011/02/super-simple-javascript-queue/>
+    *A queue implementation in coffeescript
+    *
     ###
     queue: ->
 
@@ -13,10 +14,12 @@ module.exports = (_) ->
       a = []
 
       ###*
-      Enqueues the argument that is passed. Dequeues an item if no argument is passed, returns undefined if it is empty.
-      If no queue exists, it is created and the enqueue/dequeue step is carried out.
-      @param v the item that is to be enqueued
-      @return for enqueueing, the resultant queue is returned. For dequeueing, the dequeued item is returned
+      *Enqueues the argument that is passed. Dequeues an item if no argument is passed, returns undefined if it is empty.
+      *If no queue exists, it is created and the enqueue/dequeue step is carried out.
+      *
+      *@method queue
+      *@param v the item that is to be enqueued
+      *@return for enqueueing, the resultant queue is returned. For dequeueing, the dequeued item is returned
       ###
       fn = (v) ->
         if v is undefined
@@ -31,15 +34,19 @@ module.exports = (_) ->
           return fn
 
       ###*
-      Checks if the queue is empty
-      @return true if empty, false otherwise
+      *Checks if the queue is empty
+      *
+      *@method empty
+      *@return true if empty, false otherwise
       ###
       fn.empty = ->
         s == e
 
       ###*
-      Returns length of the queue
-      @return the queue length
+      *Returns length of the queue
+      *
+      *@method count
+      *@return the queue length
       ###
       fn.count = ->
         len = s - e
@@ -47,9 +54,11 @@ module.exports = (_) ->
         return len
       
       ###*
-      Prepends an item to the queue
-      @param v the value to be prepended to the queue
-      @return the resultant prepended queue is returned
+      *Prepends an item to the queue
+      *
+      *@method unshift
+      *@param v the value to be prepended to the queue
+      *@return the resultant prepended queue is returned
       ###
       fn.unshift = (v) ->
         if --s < 0
@@ -58,8 +67,10 @@ module.exports = (_) ->
         return fn
       
       ###*
-      Clears the queue
-      @return the cleared queue is returned
+      *Clears the queue
+      *
+      *@method clear
+      *@return the cleared queue is returned
       ###
       fn.clear = ->
         e = s

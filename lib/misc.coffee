@@ -4,9 +4,11 @@ module.exports = (_) ->
   _.extend _,
     
     ###*
-    Returns image mime type based on image extension
-    @param extension the image extension
-    @return the image mime
+    *Returns image mime type based on image extension
+    *
+    *@method imgMime
+    *@param extension the image extension
+    *@return the image mime
     ###
     imgMime: (extension='') ->
       switch extension = extension.toLowerCase()
@@ -16,9 +18,11 @@ module.exports = (_) ->
           'image/jpeg'
 
     ###*
-    Converts 8-bit unsigned integer to base 64 value
-    @param bytes the 8-bit unsigned integer input
-    @return the base 64 value
+    *Converts 8-bit unsigned integer to base 64 value
+    *
+    *@method uint8ToB64
+    *@param bytes the 8-bit unsigned integer input
+    *@return the base 64 value
     ###
     uint8ToB64: (bytes) ->
       len = bytes.buffer.byteLength
@@ -37,14 +41,14 @@ module.exports = (_) ->
       base64
 
     ###*
-    Case insensitive character by character coomparison of two strings
-    @param lhs the string that is being compared
-    @param rhs the string being compared to
-    @return -1 if first string is lesser than the second, 1 otherwise
+    *Case insensitive character by character coomparison of two strings
+    *
+    *@method nocaseCmp
+    *@param lhs the string that is being compared
+    *@param rhs the string being compared to
+    *@return -1 if first string is lesser than the second, 1 otherwise
     ###
     nocaseCmp: (lhs, rhs) ->
-      # lhs.toLowerCase().localeCompare(rhs.toLowerCase())
-      # the below is faster, although not locale-aware
       `(lhs.toLowerCase() < rhs.toLowerCase() ? -1 : 1)`
 
     tasks: do ->
@@ -59,19 +63,23 @@ module.exports = (_) ->
         return
 
     ###*
-    Checks if the given string is present at the start of another string
-    @param string the string being checked if it contains the given string at the beginning
-    @param start the string to be checked if it is present at the beginning of another string
-    @return returns true if start is present at the beginning of string, false otherwise 
+    *Checks if the given string is present at the start of another string
+    *
+    *@method startsWith
+    *@param string the string being checked if it contains the given string at the beginning
+    *@param start the string to be checked if it is present at the beginning of another string
+    *@return returns true if start is present at the beginning of string, false otherwise 
     ###
     startsWith: (string, start) ->
       string.lastIndexOf(start,0) is 0
     
     ###*
-    Checks if the given string is present at the end of another string
-    @param string the string being checked if it contains the given string at the end
-    @param end the string to be checked if it is present at the end of another string
-    @return returns true if end is present at the ending of string, false otherwise 
+    *Checks if the given string is present at the end of another string
+    *
+    *@method endsWith
+    *@param string the string being checked if it contains the given string at the end
+    *@param end the string to be checked if it is present at the end of another string
+    *@return returns true if end is present at the ending of string, false otherwise 
     ###
     endsWith: (string, end) ->
       string.indexOf(end, string.length - end.length) isnt -1
@@ -103,7 +111,9 @@ module.exports = (_) ->
       ret
 
     ###*
-    Returns a number that begins from value 1 is increased by 1 on each call. Is reset to 0 if maximum value is reached
+    *Returns a number that begins from value 1 is increased by 1 on each call. Is reset to 0 if maximum value is reached
+    *
+    *@method makeId
     ###
     makeId: do ->
       count = 0
@@ -112,11 +122,13 @@ module.exports = (_) ->
 
 
     ###*
-    Invokes a function only if it is not called for a certain wait time
-    @param func the function that is invoked
-    @param wait the wait time in milliseconds for the function
-    @param immediate triggers function on leading edge for if true, triggers on trailing edge if false
-    @return the result of the invoked function
+    *Invokes a function only if it is not called for a certain wait time
+    *
+    *@method debounce
+    *@param func the function that is invoked
+    *@param wait the wait time in milliseconds for the function
+    *@param immediate triggers function on leading edge for if true, triggers on trailing edge if false
+    *@return the result of the invoked function
     ###
     debounce: (func, wait, immediate) ->
       [func,wait] = [wait,func] if typeof wait is 'function'
@@ -148,10 +160,12 @@ module.exports = (_) ->
           result
 
     ###*
-    Throttles the execution of the function such that it is executed at most once per wait time
-    @param func the function to be throttled
-    @param wait the period in milliseconds over which the function is executed at most once
-    @return returns the result of the exexution of the function
+    *Throttles the execution of the function such that it is executed at most once per wait time
+    *
+    *@method throttle
+    *@param func the function to be throttled
+    *@param wait the period in milliseconds over which the function is executed at most once
+    *@return returns the result of the exexution of the function
     ###
     throttle: `function (func, wait) {
       var args,

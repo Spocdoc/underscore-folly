@@ -7,13 +7,16 @@ convertSourceMap = require 'convert-source-map'
 module.exports = (_) ->
 
   ###*
-  Compiles the file into javascript and returns the sourcemap.
+  *Compiles the file into javascript and returns the sourcemap.
+  *
   ###
   transpilerBase =
     ###*
-    Synchronised version of transpilerBase.async
-    @param filepath the path of the file to be compiled 
-    @result returns the source map
+    *Compiles the file into javascript and returns the sourcemap.
+    *
+    *@method transpilerBase.sync
+    *@param filepath the path of the file to be compiled 
+    *@result returns the source map
     ###
     sync:
       '.coffee': _.fileMemoizeSync (filePath) ->
@@ -32,8 +35,11 @@ module.exports = (_) ->
         catch e
           throw new Error "Error compiling #{filePath}: #{e}"
     ###*
-    @param filepath the path of the file to be compiled 
-    @param cb the callback function
+    *Compiles the file into javascript and returns the sourcemap.
+    *
+    *@method transpilerBase.async
+    *@param filepath the path of the file to be compiled 
+    *@param cb the callback function
     ###
     async:
       '.coffee': _.fileMemoize (filePath, cb) ->
@@ -73,10 +79,12 @@ module.exports = (_) ->
 
   _.extend _,
     ###*
-    Resolves file paths to include the extension of the file. 
-    Resolves extensions as js or coffee
-    @param filepath the path of the file, may or may not include extension of the file
-    @param cb the callback function 
+    *Resolves file paths to include the extension of the file. 
+    *Resolves extensions as js or coffee
+    *
+    *@method resolveExtension
+    *@param filepath the path of the file, may or may not include extension of the file
+    *@param cb the callback function 
     ###
     resolveExtension: async.memoize (filePath, cb) ->
       return cb null, filePath if path.extname(filePath)
@@ -88,10 +96,12 @@ module.exports = (_) ->
         else
           cb null, result
     ###*
-    Resolves file paths to include the extension of the file. 
-    Resolves extensions as js or coffee. Synchronised version of resolveExtension
-    @param filepath the path of the file, may or may not include extension of the file
-    @result returns the filepath including the file extension
+    *Resolves file paths to include the extension of the file. 
+    *Resolves extensions as js or coffee. Synchronised version of resolveExtension
+    *
+    *@method resolveExtensionSync
+    *@param filepath the path of the file, may or may not include extension of the file
+    *@result returns the filepath including the file extension
     ###
     resolveExtensionSync: do ->
       cache = {}
@@ -105,9 +115,11 @@ module.exports = (_) ->
         throw new Error("Can't resolve #{filePath}")
 
     ###*
-    Checks if a transpiler exists for the given file (based on file extension), resolves to a transpiler if it exists
-    @param filepath the complete path of the file
-    @param cb the callback function 
+    *Checks if a transpiler exists for the given file (based on file extension), resolves to a transpiler if it exists
+    *
+    *@method readCode
+    *@param filepath the complete path of the file
+    *@param cb the callback function 
     ###
     readCode: (filePath, cb) ->
       ext = path.extname filePath
@@ -115,10 +127,12 @@ module.exports = (_) ->
         return cb new Error("no known transpiler for extension [#{ext}], filePath [#{filePath}]")
       transpiler filePath, cb
     ###*
-    Checks if a transpiler exists for the given file (based on file extension), returns a transpiler if it exists.
-    Synchronised version of readCode
-    @param filepath the complete path of the file
-    @result returns a transpiler  
+    *Checks if a transpiler exists for the given file (based on file extension), returns a transpiler if it exists.
+    *Synchronised version of readCode
+    *
+    *@method readCodeSync
+    *@param filepath the complete path of the file
+    *@result returns a transpiler  
     ###
     readCodeSync: (filePath) ->
       ext = path.extname filePath
@@ -127,9 +141,11 @@ module.exports = (_) ->
       transpiler filePath
 
     ###*
-    Generates a source map for the given file
-    @param filepath the complete path of the file
-    @param cb the callback function 
+    *Generates a source map for the given file
+    *
+    *@method sourceMap
+    *@param filepath the complete path of the file
+    *@param cb the callback function 
     ###
     sourceMap: (filePath, cb) ->
       ext = path.extname filePath
@@ -139,18 +155,22 @@ module.exports = (_) ->
         cb null, null
     
     ###*
-    Generates a source map for the given file.
-    Synchronised version of sourceMap
-    @param filepath the complete path of the file
-    @result the source map
+    *Generates a source map for the given file.
+    *Synchronised version of sourceMap
+    *
+    *@method sourceMapSync
+    *@param filepath the complete path of the file
+    *@result the source map
     ###
     sourceMapSync: (filePath) ->
       codeSourceMap.sync[path.extname filePath]? filePath
 
     ###*
-    Given code with a b64 sourcemap at the end, extracts it and returns the code without the sourcemap and the (object) sourcemap
-    @param code contains the code and a source map
-    @result separated code and source map
+    *Given code with a b64 sourcemap at the end, extracts it and returns the code without the sourcemap and the (object) sourcemap
+    *
+    *@method extractSourceMap
+    *@param code contains the code and a source map
+    *@result separated code and source map
     ###
     extractSourcemap: (code) ->
       code: code.replace convertSourceMap.commentRegex, ''
@@ -158,10 +178,12 @@ module.exports = (_) ->
 
 
     ###* 
-    Takes an array of code, each of which optionally have a trailing b64 sourcemap, and merges them into a single piece of code with a trailing sourcemap
-    @param arr an array of code
-    @param inlineSources 
-    @result merged mapped code containing the code along with a trailing sourcemap
+    *Takes an array of code, each of which optionally have a trailing b64 sourcemap, and merges them into a single piece of code with a trailing sourcemap
+    *
+    *@method mergeMappedCode
+    *@param arr an array of code
+    *@param inlineSources 
+    *@result merged mapped code containing the code along with a trailing sourcemap
     ###
     mergeMappedCode: (arr, inlineSources) ->
       bundleMap = new SourceMapGenerator file: 'bundle-5298e9128a2f32388dde4970.js'
