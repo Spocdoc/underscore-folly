@@ -1,4 +1,3 @@
-require 'function_names'
 module.exports = _ = 
   ###*
   *Extends the given object with mixins

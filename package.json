@@ -1,21 +1,18 @@
 {
-  "name": "lodash-fork",
-  "version": "0.1.1",
-  "description": "ERROR: No README.md file found!",
+  "name": "underscore-folly",
+  "version": "0.2.1",
+  "description": "Collection of utilities inspired by underscore, compatible with the folly bundler.",
   "main": "index.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "",
   "author": "",
-  "private": true,
+  "private": false,
   "dependencies": {
     "async": "0.x",
     "convert-source-map": "0.x",
     "source-map": "~0.x",
-    "function_names": "0.x",
-    "debug-fork": "0.x",
-    "hash-fork": "0.x",
     "mkdirp": "0.x"
   }
 }

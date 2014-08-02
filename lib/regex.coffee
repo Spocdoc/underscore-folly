@@ -1,4 +1,4 @@
-require 'function_names'
+# require 'function_names' -- without, won't support IE<9
 maxInt = 9007199254740992
 spaceChars = " \t\r\n\u00a0"
 

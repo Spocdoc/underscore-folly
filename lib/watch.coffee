@@ -1,7 +1,7 @@
 fs = require 'fs'
 path = require 'path'
-require 'debug-fork'
-debug = global.debug 'lodash:watch'
+# require 'debug-fork'
+# debug = global.debug 'underscore-folly:watch'
 
 DROP_MILLIS = 1500
 POLL_MILLIS = 100
@@ -42,10 +42,10 @@ module.exports = (_) ->
         try
           dirPath = path.dirname filePath
           unless watcher = ret.watched[inode = _.getInodeSync dirPath]
-            debug "watching [#{inode}]: [#{dirPath}]"
+            # debug "watching [#{inode}]: [#{dirPath}]"
 
             (ret.watched[inode] = watcher = fs.watch dirPath, options).on 'change', (type, fileName) ->
-              debug "got hit with ",arguments
+              # debug "got hit with ",arguments
               return if ret.callback.running
 
               now = Date.now()
@@ -57,7 +57,7 @@ module.exports = (_) ->
                 catch _error
                   return
 
-                debug "making the call..."
+                # debug "making the call..."
                 ret.callback()
               return
 
@@ -87,7 +87,7 @@ module.exports = (_) ->
           for inode, watcher of ret.watched when watcher.cycle is clearCycle
             watcher.close()
             delete ret.watched[inode]
-            debug "no longer watching [#{inode}]"
+            # debug "no longer watching [#{inode}]"
           return
         ), CLEAR_MILLIS
 
@@ -108,7 +108,7 @@ module.exports = (_) ->
       handledRequiresCount = fixedRequiresCount = 0
 
       reset = (done) ->
-        debug "RESET"
+        # debug "RESET"
         
         watcher.clear()
 

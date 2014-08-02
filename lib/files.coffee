@@ -1,8 +1,8 @@
 fs = require 'fs'
 async = require 'async'
-hash = require 'hash-fork'
-require 'debug-fork'
-debugError = global.debug 'error'
+# hash = require 'hash-fork'
+# require 'debug-fork'
+# debugError = global.debug 'error'
 mkdirp = require 'mkdirp'
 {spawn} = require('child_process')
 
@@ -197,7 +197,7 @@ module.exports = (_) ->
         try
           mtime = _.getModTimeSync filePath
         catch _error
-          debugError "attempt to fileMemoize on a nonexistent file at [#{filePath}]"
+          # debugError "attempt to fileMemoize on a nonexistent file at [#{filePath}]"
           return ''
 
         return cacheResults[filePath] if cacheTimes[filePath] is mtime
@@ -211,11 +211,11 @@ module.exports = (_) ->
     readBinary: _.fileMemoize ((filePath, cb) -> fs.readFile filePath, cb), readBinaryCache
     readBinarySync: _.fileMemoizeSync ((filePath) -> fs.readFileSync filePath), readBinaryCache
 
-    fileHash: _.fileMemoize ((filePath, cb) ->
-      _.readBinary filePath, (err, buffer) ->
-        return cb err if err?
-        cb null, hash buffer
-    ), fileHashCache
+    # fileHash: _.fileMemoize ((filePath, cb) ->
+    #   _.readBinary filePath, (err, buffer) ->
+    #     return cb err if err?
+    #     cb null, hash buffer
+    # ), fileHashCache
 
-    fileHashSync: _.fileMemoizeSync ((filePath) -> hash _.readBinarySync filePath), fileHashCache
+    # fileHashSync: _.fileMemoizeSync ((filePath) -> hash _.readBinarySync filePath), fileHashCache
 
