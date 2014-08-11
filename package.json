@@ -13,6 +13,29 @@
     "async": "0.x",
     "convert-source-map": "0.x",
     "source-map": "~0.x",
-    "mkdirp": "0.x"
-  }
+    "mkdirp": "0.x",
+    "uglify-js-fork": "2.3.6",
+    "resolve-fork": ""
+  },
+  "gitHead": "c2274dc1c010382263786448eccbc8835d4adac2",
+  "_id": "underscore-folly@0.2.1",
+  "_shasum": "ae789e3c9cfe6209b9a4b89821f34867e6d12384",
+  "_from": "underscore-folly@",
+  "_npmVersion": "1.4.23",
+  "_npmUser": {
+    "name": "spocdoc",
+    "email": "hello@spocdoc.com"
+  },
+  "maintainers": [
+    {
+      "name": "spocdoc",
+      "email": "hello@spocdoc.com"
+    }
+  ],
+  "dist": {
+    "shasum": "ae789e3c9cfe6209b9a4b89821f34867e6d12384",
+    "tarball": "http://registry.npmjs.org/underscore-folly/-/underscore-folly-0.2.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "http://registry.npmjs.org/underscore-folly/-/underscore-folly-0.2.1.tgz"
 }
