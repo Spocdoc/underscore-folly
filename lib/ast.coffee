@@ -2,7 +2,7 @@ fs = require 'fs'
 path = require 'path'
 async = require 'async'
 ug = require 'uglify-js-fork'
-resolve = require 'resolve-fork'
+resolve = require './resolve'
 
 regexNonNameChars = /[^a-zA-Z0-9_]/g
 varIndex = 0
