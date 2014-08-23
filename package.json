@@ -1,6 +1,6 @@
 {
   "name": "underscore-folly",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Collection of utilities inspired by underscore, compatible with the folly bundler.",
   "main": "index.coffee",
   "scripts": {

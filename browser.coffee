@@ -1,4 +1,4 @@
-module.exports = _ = 
+module.exports = _ =
   ###*
   *Extends the given object with mixins
   *
